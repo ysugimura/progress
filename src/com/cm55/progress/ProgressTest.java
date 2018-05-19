@@ -13,7 +13,7 @@ public class ProgressTest {
   public void DoneのみのテストTest() {
     List<ProgEvent>events = new ArrayList<>();
     Progress p = new Progress();
-    p.addListener(ProgEvent.class, e-> events.add(e));
+    p.listen(ProgEvent.class, e-> events.add(e));
     p.done();
     this.validate(events, ProgDoneEvent.class);
   }
@@ -22,7 +22,7 @@ public class ProgressTest {
   public void DoneのみのテストTest1() {
     List<ProgEvent>events = new ArrayList<>();
     Progress p = new Progress();
-    p.addListener(ProgEvent.class, e-> events.add(e));
+    p.listen(ProgEvent.class, e-> events.add(e));
     p.incProgress();
     this.validate(events, ProgDoneEvent.class);
   }
@@ -31,7 +31,7 @@ public class ProgressTest {
   public void doneTest1() {
     List<ProgEvent>events = new ArrayList<>();
     Progress p = new Progress();
-    p.addListener(ProgDoneEvent.class, e-> events.add(e));
+    p.listen(ProgDoneEvent.class, e-> events.add(e));
     assertEquals(0, events.size());    
     p.incProgress();
     assertEquals(ProgDoneEvent.class, events.get(0).getClass());
@@ -41,7 +41,7 @@ public class ProgressTest {
   public void doneTest2() {
     List<ProgEvent>events = new ArrayList<>();
     Progress p = new Progress();
-    p.addListener(ProgDoneEvent.class, e-> events.add(e));
+    p.listen(ProgDoneEvent.class, e-> events.add(e));
     assertEquals(0, events.size());    
     p.createChild("test", 0);
     assertEquals(1, events.size()); 
@@ -52,8 +52,8 @@ public class ProgressTest {
   public void doneTest3() {
     List<ProgEvent>events = new ArrayList<>();
     Progress p = new Progress();    
-    p.addListener(ProgTitleEvent.class, e->events.add(e));
-    p.addListener(ProgDoneEvent.class, e-> events.add(e));
+    p.listen(ProgTitleEvent.class, e->events.add(e));
+    p.listen(ProgDoneEvent.class, e-> events.add(e));
     assertEquals(0, events.size());      
     Progress c = p.createChild("Child", 2);    
     assertEquals(1, events.size()); 
@@ -70,8 +70,8 @@ public class ProgressTest {
   public void 連続的な子進捗オブジェクトの作成() {
     List<ProgEvent>events = new ArrayList<>();
     Progress p = new Progress();    
-    p.addListener(ProgTitleEvent.class, e->events.add(e));
-    p.addListener(ProgDoneEvent.class, e-> events.add(e));
+    p.listen(ProgTitleEvent.class, e->events.add(e));
+    p.listen(ProgDoneEvent.class, e-> events.add(e));
     assertEquals(0, events.size());      
     Progress child = p.createChild(null, 2);    
     
@@ -87,7 +87,7 @@ public class ProgressTest {
   public void ProgressEventのテスト_分割数が100以上でもイベントはパーセント単位のみ() {
     Progress p = new Progress(1000); 
     List<ProgEvent>events = new ArrayList<>();
-    p.addListener(ProgPercentEvent.class, e->events.add(e));
+    p.listen(ProgPercentEvent.class, e->events.add(e));
     for (int i = 0; i < 1000; i++) p.incProgress();    
     assertEquals(100, events.size());
     for (int i = 0; i < 100; i++) {
@@ -99,7 +99,7 @@ public class ProgressTest {
   public void ProgressEventのテスト_子分割の場合() {    
     Progress p = new Progress(2); 
     List<ProgEvent>events = new ArrayList<>();
-    p.addListener(ProgPercentEvent.class, e->events.add(e));
+    p.listen(ProgPercentEvent.class, e->events.add(e));
     
     Progress c = p.createChild(null,  5);
     for (int i = 0; i < 5; i++)  c.incProgress();

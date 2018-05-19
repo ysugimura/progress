@@ -4,6 +4,8 @@ import java.util.*;
 import java.util.function.*;
 import java.util.stream.*;
 
+import com.cm55.eventBus.*;
+
 public class Progress  {
 
   protected EventBus es = new EventBus();
@@ -123,7 +125,7 @@ public class Progress  {
 
     // この子オブジェクトに進捗報告をまかせる
     currentChild = child;
-    currentChild.addListener(ProgEvent.class, this::processChildEvent);
+    currentChild.listen(ProgEvent.class, this::processChildEvent);
     if (title != null) {
       currentChild.es.dispatchEvent(new ProgTitleEvent(currentChild));     
     }   
@@ -265,13 +267,7 @@ public class Progress  {
   }
 
   /** リスナー登録 */
-  public <T> void addListener(Class<T> eventType, Consumer<T> consumer) {
-    es.addListener(eventType, consumer);
+  public <T> Unlistener<T> listen(Class<T> eventType, Consumer<T> consumer) {
+    return es.listen(eventType, consumer);
   }
-  
-  /** リスナー削除 */
-  public <T> void removeListener(Class<T>eventType, Consumer<T> consumer) {
-    es.removeListener(eventType, consumer);
-  }
-
 }
