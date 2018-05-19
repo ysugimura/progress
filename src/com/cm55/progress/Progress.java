@@ -8,7 +8,7 @@ import com.cm55.eventBus.*;
 
 public class Progress  {
 
-  protected EventBus es = new EventBus();
+  protected EventBus es = new ProgEventBus();
   
   /** タイトル */
   protected String title;
