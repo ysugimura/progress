@@ -270,4 +270,9 @@ public class Progress  {
   public <T> Unlistener<T> listen(Class<T> eventType, Consumer<T> consumer) {
     return es.listen(eventType, consumer);
   }
+  
+  /** 分割数を取得する */
+  public int getDivisionCount() {
+    return divisionCount;
+  }
 }
